@@ -11,8 +11,6 @@ class ClinicController {
 
             const clinics = await ClinicsDao.find({ offset, limit })
 
-            console.log('find: ', req.body);
-
             return res.status(200).json({
                 success: true,
                 data: clinics
@@ -21,7 +19,7 @@ class ClinicController {
         catch (e) {
             return res.status(400).json({
                 success: false,
-                msg: e.messages || "Invalid values"
+                msg: "Invalid values"
             })
         }
     }
@@ -37,15 +35,13 @@ class ClinicController {
         catch (e) {
             return res.status(400).json({
                 success: false,
-                msg: e.messages || "Invalid values"
+                msg: "Invalid values"
             })
         }
     }
 
     async createTeste(req: Request, res: Response) {
         try {
-            console.log("-----> Aqui 1");
-
             const strRandon = () => {
                 return crypto.randomBytes(30).toString("hex")
             }
@@ -77,7 +73,7 @@ class ClinicController {
             console.log(e)
             return res.status(400).json({
                 success: false,
-                msg: e.messages || "Invalid values"
+                msg: "Invalid values"
             })
         }
     }
@@ -93,7 +89,7 @@ class ClinicController {
         catch (e) {
             return res.status(400).json({
                 success: false,
-                msg: e.messages || "Invalid values"
+                msg: "Invalid values"
             })
         }
     }
@@ -109,7 +105,7 @@ class ClinicController {
         catch (e) {
             return res.status(400).json({
                 success: false,
-                msg: e.messages || "Invalid values"
+                msg: "Invalid values"
             })
         }
     }

@@ -15,7 +15,18 @@ Projeto foi divido em back-end e front-end.
 - PostgreSQL
 - Sequelize
 - Jest
+- Docker
 
 
 ## Como executar
 
+Para executar é necessário utilizar o Docker e digitar os seguintes comandos no terminal da pasta do projeto:
+
+
+```
+
+docker-compose up --build -d
+
+docker run -p 3333:3333 temsaude-clinics-server_server
+
+```
