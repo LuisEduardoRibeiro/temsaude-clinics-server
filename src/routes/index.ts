@@ -3,7 +3,6 @@ import ClinicsController from '../controllers/ClinicController'
 
 const routes = Router()
 
-routes.get('/clinics/teste', ClinicsController.createTeste)
 routes.get('/clinics/:address', ClinicsController.findByAddress)
 routes.get('/clinics', ClinicsController.find)
 routes.post('/clinics', ClinicsController.create)
