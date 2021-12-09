@@ -1,4 +1,4 @@
-import { Op } from "sequelize/dist"
+import { Op, Sequelize } from "sequelize/dist"
 import Clinics, { ClinicsAttributes } from "../database/models/Clinics"
 
 class ClinicsDao {
@@ -46,20 +46,21 @@ class ClinicsDao {
     }
 
     async findByAddress(params: any) {
-        const { ds_logradouro, ds_bairro, ds_cidade, ds_estado } = params
+        let { address } = params
         const limit = params.limit || this.limit
         const offset = params.offset || this.offset
+
+        const endereco = '%' + address + '%'
+
         return await Clinics.findAll({
             where: {
                 [Op.or]: [
-                    { ds_logradouro },
-                    { ds_bairro }
+                    { ds_logradouro: { [Op.iLike]: endereco } },
+                    { ds_bairro: { [Op.iLike]: endereco } },
+                    { ds_cidade: { [Op.iLike]: endereco } },
+                    { ds_estado: { [Op.iLike]: endereco } }
                 ],
-                ds_cidade,
-                ds_estado
-            },
-            offset,
-            limit
+            }
         })
     }
 
