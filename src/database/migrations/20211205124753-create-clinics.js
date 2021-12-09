@@ -16,7 +16,6 @@ module.exports = {
       ds_cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       ds_logradouro: {
         type: Sequelize.STRING,
