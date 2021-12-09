@@ -2,6 +2,19 @@ import { Request, Response } from "express"
 import ClinicsDao from "../dao/ClinicsDao"
 import crypto from "crypto"
 
+const checkRequiredFields = (data: any) => {
+    const required = [
+        'ds_name',
+        'ds_cnpj'
+    ]
+    const erros = required.filter(v => !data[v])
+
+    if (erros.length > 0) return `Campos são obrigatórios: ${erros.join(', ')}`
+
+    return null;
+}
+
+
 class ClinicController {
 
     async find(req: Request, res: Response) {
@@ -26,7 +39,7 @@ class ClinicController {
 
     async findByAddress(req: Request, res: Response) {
         try {
-            const clinics = await ClinicsDao.findByAddress(req.body)
+            const clinics = await ClinicsDao.findByAddress(req.params)
             return res.status(200).json({
                 success: true,
                 data: clinics
@@ -40,53 +53,24 @@ class ClinicController {
         }
     }
 
-    async createTeste(req: Request, res: Response) {
-        try {
-            const strRandon = () => {
-                return crypto.randomBytes(30).toString("hex")
-            }
-
-            const getNewClinic = () => {
-                return {
-                    ds_name: strRandon(),
-                    ds_cnpj: strRandon(),
-                    ds_logradouro: strRandon(),
-                    ds_numero: strRandon(),
-                    ds_complemento: strRandon(),
-                    ds_bairro: strRandon(),
-                    ds_cidade: strRandon(),
-                    ds_estado: strRandon(),
-                    ds_pais: strRandon(),
-                    ds_latitude: strRandon(),
-                    ds_longitude: strRandon(),
-                }
-            }
-
-            const newClinic = await ClinicsDao.findById(1)
-
-            return res.status(200).json({
-                success: true,
-                data: newClinic
-            })
-        }
-        catch (e) {
-            console.log(e)
-            return res.status(400).json({
-                success: false,
-                msg: "Invalid values"
-            })
-        }
-    }
-
     async create(req: Request, res: Response) {
         try {
+            const requiredFields = checkRequiredFields(req.body)
+            if (requiredFields && requiredFields != "") {
+                return res.status(400).json({
+                    success: false,
+                    msg: requiredFields
+                })
+            }
+
             const newClinic = await ClinicsDao.create(req.body)
             return res.status(200).json({
                 success: true,
-                data: newClinic
+                data: [newClinic]
             })
         }
         catch (e) {
+            console.log("ClinicController - create - Error: ", req.body, e)
             return res.status(400).json({
                 success: false,
                 msg: "Invalid values"
